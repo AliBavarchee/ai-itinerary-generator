@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Processing Itinerary</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(120deg, #e0f7fa, #bbdefb);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+            text-align: center;
+            padding: 40px;
+        }
+
+        /* ADDED: Logo styles */
+        .logo-container {
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            max-width: 100px;
+            height: auto;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .destination {
+            color: #3498db;
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(52, 152, 219, 0.2);
+            border-top-color: #3498db;
+            border-radius: 50%;
+            margin: 30px auto;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        p {
+            font-size: 1.2rem;
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+        
+        .job-id {
+            background: #f1f8ff;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 20px 0;
+            display: inline-block;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #ecf0f1;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 30px 0;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            width: 0%;
+            animation: progress 2s infinite alternate;
+        }
+        
+        @keyframes progress {
+            0% { width: 10%; }
+            100% { width: 90%; }
+        }
+        
+        .refresh-note {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ADDED: Logo -->
+        <div class="logo-container">
+            <img class="logo" src="https://teal-broad-gecko-650.mypinata.cloud/ipfs/bafkreif332ra4lrdjfzaiowc2ikhl65uflok37e7hmuxomwpccracarqpy" alt="Logo">
+        </div>
+
+        <h1>Creating Your Itinerary</h1>
+        <p>We're generating your perfect trip to:</p>
+        <div class="destination">{{ destination }}</div>
+        <p>for <strong>{{ duration }} days</strong></p>
+        
+        <div class="spinner"></div>
+        <div class="progress-bar">
+            <div class="progress"></div>
+        </div>
+        
+        <p>This usually takes 10-20 seconds...</p>
+        <div class="job-id">Job ID: {{ job_id }}</div>
+        <p class="refresh-note">This page will automatically update when ready</p>
+    </div>
+
+    <script>
+        // Check status every 3 seconds
+        function checkStatus() {
+            fetch(window.location.href)
+                .then(response => response.text())
+                .then(html => {
+                    // If we received the itinerary page, redirect to it
+                    if (html.includes('itinerary-days')) {
+                        window.location.reload();
+                    }
+                });
+        }
+        
+        // Start checking
+        setInterval(checkStatus, 3000);
+    </script>
+</body>
+</html>

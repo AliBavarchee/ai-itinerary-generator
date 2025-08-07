@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Padova Itinerary</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #3498db, #8e44ad);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .itinerary-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .meta-item {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+        
+        .itinerary-days {
+            padding: 30px;
+        }
+        
+        .day-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            overflow: hidden;
+            border-left: 4px solid #3498db;
+        }
+        
+        .day-header {
+            background: #f1f8ff;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .day-number {
+            background: #3498db;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+        
+        .day-theme {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .activities {
+            padding: 20px;
+        }
+        
+        .activity {
+            display: flex;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .activity:last-child {
+            border-bottom: none;
+        }
+        
+        .time {
+            min-width: 100px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .activity-details {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .activity-location {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+
+        /* ✅ [ADD] Logo styles */
+        .logo-container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .logo-container img {
+            max-width: 150px;
+            height: auto;
+        }
+
+        @media (max-width: 768px) {
+            .activity {
+                flex-direction: column;
+            }
+            
+            .time {
+                margin-bottom: 8px;
+            }
+            
+            header {
+                padding: 20px;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Your {{ duration }}-Day Itinerary for {{ destination }}</h1>
+            <div class="itinerary-meta">
+                <div class="meta-item">Job ID: {{ job_id }}</div>
+                <div class="meta-item">Generated: {{ created_at }}</div>
+            </div>
+        </header>
+        
+        <div class="itinerary-days">
+            {% for day in itinerary %}
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-number">Day {{ day.day }}</div>
+                    <div class="day-theme">{{ day.theme }}</div>
+                </div>
+                
+                <div class="activities">
+                    {% for activity in day.activities %}
+                    <div class="activity">
+                        <div class="time">{{ activity.time }}</div>
+                        <div class="activity-details">
+                            <div class="activity-title">{{ activity.description }}</div>
+                            <div class="activity-location">{{ activity.location }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="footer">
+            <p>Generated by AI Itinerary Generator • {{ completed_at }}</p>
+        </div>
+
+        <!-- ✅ [ADD] Logo at the bottom -->
+        <div class="logo-container">
+            <img class="logo" src="https://teal-broad-gecko-650.mypinata.cloud/ipfs/bafkreif332ra4lrdjfzaiowc2ikhl65uflok37e7hmuxomwpccracarqpy" alt="Logo">
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=2.2">
+    <title>AI Travel Itinerary Generator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(120deg, #e0f7fa, #bbdefb);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #3498db, #8e44ad);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        /* 🆕 Logo style */
+        .logo {
+            max-width: 80px;
+            margin-bottom: 15px;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                max-width: 100%;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            /* 🆕 Make logo smaller on mobile */
+            .logo {
+                max-width: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <!-- 🆕 Logo inserted here -->
+            <img class="logo" src="https://teal-broad-gecko-650.mypinata.cloud/ipfs/bafkreif332ra4lrdjfzaiowc2ikhl65uflok37e7hmuxomwpccracarqpy" alt="Logo">
+            <h1>AI Travel Planner</h1>
+            <p>Generate your perfect itinerary in seconds</p>
+        </header>
+
+        <div class="form-container">
+            <form id="itineraryForm" action="/generate" method="POST">
+                <div class="form-group">
+                    <label for="destination">Destination:</label>
+                    <input type="text" id="destination" name="destination" 
+                           placeholder="Enter city or country" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label for="durationDays">Trip Duration (days):</label>
+                    <input type="number" id="durationDays" name="durationDays" 
+                           min="1" max="30" value="5" required>
+                </div>
+
+                <button type="submit">Generate My Itinerary</button>
+            </form>
+
+            <div id="errorMessage" class="error"></div>
+        </div>
+
+        <footer>
+            <p>Powered by AI • Your personalized travel assistant</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('itineraryForm').addEventListener('submit', function(e) {
+            const destination = document.getElementById('destination').value.trim();
+            const durationDays = document.getElementById('durationDays').value;
+            const errorElement = document.getElementById('errorMessage');
+
+            if (!destination) {
+                e.preventDefault();
+                errorElement.textContent = "Please enter a destination";
+                errorElement.style.display = 'block';
+                return false;
+            }
+
+            if (!durationDays || durationDays < 1 || durationDays > 30) {
+                e.preventDefault();
+                errorElement.textContent = "Please enter a valid duration (1-30 days)";
+                errorElement.style.display = 'block';
+                return false;
+            }
+
+            errorElement.style.display = 'none';
+            return true;
+        });
+    </script>
+</body>
+</html>
